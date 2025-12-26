@@ -274,11 +274,30 @@ namespace Orbit
         public static async Task<UserProfile> GetProfile() => JsonUtility.FromJson<UserProfile>(await Internal.getProfileAsync());
 
         /// <summary>
-        /// Retrieves the user's balance.
+        /// [Obsolete] Retrieves the user's gems (for IAPs balance) balance.
         /// </summary>
         /// <returns>The balance as a string.</returns>
-        public static async Task<string> GetBalance() => await Internal.getBalanceAsync();
-        
+        [Obsolete] public static async Task<string> GetBalance() => (await Internal.getBalanceGemsAsync());
+
+        /// <summary>
+        /// Retrieves the user's gems (for IAPs) balance.
+        /// </summary>
+        /// <returns>The balance as a string.</returns>
+        public static async Task<ulong> GetBalanceGems()
+        {
+            ulong.TryParse(await Internal.getBalanceGemsAsync(), out var result);
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieves the user's coins balance.
+        /// </summary>
+        /// <returns>The balance as a string.</returns>
+        public static async Task<ulong> GetBalanceCoins()
+        {
+            ulong.TryParse(await Internal.getBalanceCoinsAsync(), out var result);
+            return result;
+        }
          
         /// <summary>
         /// Get current user locale
@@ -380,5 +399,29 @@ namespace Orbit
         
         #endregion
         
+        #region Ad Callbacks
+        
+        public static void SetOnAdStart(Action<bool> callback)
+        {
+            if (callback != null && !callback.Method.IsStatic) {
+                throw new ArgumentException("Only static methods are allowed as ad callbacks");
+            }
+            
+            Internal.setOnAdStart(callback);
+        }
+
+        public static void SetOnAdEnd(Action<bool> callback)
+        {
+            if (callback != null && !callback.Method.IsStatic) {
+                throw new ArgumentException("Only static methods are allowed as ad callbacks");
+            }
+            
+            Internal.setOnAdEnd(callback);
+        }
+        public static void ClearOnAdStart() => Internal.clearOnAdStart();
+        public static void ClearOnAdEnd() => Internal.clearOnAdEnd();
+
+        #endregion
+
     }
 }

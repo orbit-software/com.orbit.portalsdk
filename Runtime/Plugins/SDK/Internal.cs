@@ -160,22 +160,41 @@ namespace Orbit
             }
             #endregion
             
-            #region API Method: getBalance
+            #region API Method: getBalanceGems
             
-            private static TaskCompletionSource<string> getBalanceCS;
-            [MonoPInvokeCallback(typeof(Action<string>))] private static void getBalanceCallback(string val) => getBalanceCS.TrySetResult(val);
+            private static TaskCompletionSource<string> getBalanceGemsCS;
+            [MonoPInvokeCallback(typeof(Action<string>))] private static void getBalanceGemsCallback(string val) => getBalanceGemsCS.TrySetResult(val);
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-            [DllImport("__Internal")] public static extern void getBalance(Action<string> callback);
+            [DllImport("__Internal")] public static extern void getBalanceGems(Action<string> callback);
 #else
-            private static void getBalance(Action<string> cb) => cb(null);
+            private static void getBalanceGems(Action<string> cb) => cb(null);
 #endif
 
-            public static Task<string> getBalanceAsync()
+            public static Task<string> getBalanceGemsAsync()
             {
-                getBalanceCS = new TaskCompletionSource<string>();
-                getBalance(getBalanceCallback);
-                return getBalanceCS.Task;
+                getBalanceGemsCS = new TaskCompletionSource<string>();
+                getBalanceGems(getBalanceGemsCallback);
+                return getBalanceGemsCS.Task;
+            }
+            #endregion
+            
+            #region API Method: getBalanceCoins
+            
+            private static TaskCompletionSource<string> getBalanceCoinsCS;
+            [MonoPInvokeCallback(typeof(Action<string>))] private static void getBalanceCoinsCallback(string val) => getBalanceCoinsCS.TrySetResult(val);
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+            [DllImport("__Internal")] public static extern void getBalanceCoins(Action<string> callback);
+#else
+            private static void getBalanceCoins(Action<string> cb) => cb(null);
+#endif
+
+            public static Task<string> getBalanceCoinsAsync()
+            {
+                getBalanceCoinsCS = new TaskCompletionSource<string>();
+                getBalanceCoins(getBalanceCoinsCallback);
+                return getBalanceCoinsCS.Task;
             }
             #endregion
             
@@ -324,6 +343,46 @@ namespace Orbit
                 getValue(key, getValueCallback);
                 return getValueCS.Task;
             }
+            #endregion
+            
+            #endregion
+            
+            #region Ad Callbacks
+            
+            #region API Method: setOnAdStart
+            
+#if UNITY_WEBGL && !UNITY_EDITOR
+            [DllImport("__Internal")] public static extern void setOnAdStart(Action<bool> callback);
+#else
+            public static void setOnAdStart(Action<bool> cb) => cb(true);
+#endif
+            #endregion
+            
+            #region API Method: setOnAdEnd
+            
+#if UNITY_WEBGL && !UNITY_EDITOR
+            [DllImport("__Internal")] public static extern void setOnAdEnd(Action<bool> callback);
+#else
+            public static void setOnAdEnd(Action<bool> cb) => cb(true);
+#endif
+            #endregion
+            
+            #region API Method: clearOnAdStart
+            
+#if UNITY_WEBGL && !UNITY_EDITOR
+            [DllImport("__Internal")] public static extern void clearOnAdStart();
+#else
+            public static void clearOnAdStart() {}
+#endif
+            #endregion
+            
+            #region API Method: clearOnAdEnd
+            
+#if UNITY_WEBGL && !UNITY_EDITOR
+            [DllImport("__Internal")] public static extern void clearOnAdEnd();
+#else
+            public static void clearOnAdEnd() {}
+#endif
             #endregion
             
             #endregion

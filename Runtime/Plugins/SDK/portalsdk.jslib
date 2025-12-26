@@ -86,7 +86,7 @@ var LIB = {
     
   getBalance: function(cb) {
     window.PortalSDK.getBalance().then(response => {
-       var str = response.toString()
+       var str = response.balance_gems.toString()
        
        var bufferSize = lengthBytesUTF8(str) + 1;
        var buffer = _malloc(bufferSize);
@@ -94,6 +94,30 @@ var LIB = {
        
        dynCall_vi(cb, buffer);
     });
+  },
+  
+  getBalanceGems: function(cb) {
+      window.PortalSDK.getBalance().then(response => {
+         var str = response.balance_gems.toString()
+         
+         var bufferSize = lengthBytesUTF8(str) + 1;
+         var buffer = _malloc(bufferSize);
+         stringToUTF8(str, buffer, bufferSize);
+         
+         dynCall_vi(cb, buffer);
+      });
+  },
+  
+  getBalanceCoins: function(cb) {
+      window.PortalSDK.getBalance().then(response => {
+         var str = response.balance_coins.toString()
+         
+         var bufferSize = lengthBytesUTF8(str) + 1;
+         var buffer = _malloc(bufferSize);
+         stringToUTF8(str, buffer, bufferSize);
+         
+         dynCall_vi(cb, buffer);
+      });
   },
 
   getLocale: function() {  
@@ -109,7 +133,7 @@ var LIB = {
   //----------------------------------------
     
   showSharing: function(url, text) {
-      window.PortalSDK.showSharing(url, text)
+      window.PortalSDK.showSharing(UTF8ToString(url), UTF8ToString(text))
   },
  
   getStartParam: function() {  
@@ -250,6 +274,31 @@ var LIB = {
         
         dynCall_vi(cb, buffer);
     });
+  },
+  
+  //----------------------------------------
+  //-- Ad Callbacks
+  //----------------------------------------
+
+  setOnAdStart: function(cb) {
+    window.PortalSDK.onAdStart = function() {  
+        dynCall_vi(cb, true);
+    };
+    console.log('[PortalSDK] set onAdStart = ' + window.PortalSDK.onAdStart);
+  },
+  setOnAdEnd: function(cb) {
+    window.PortalSDK.onAdEnd = function(success) {  
+      dynCall_vi(cb, success);
+    };
+    console.log('[PortalSDK] set onAdEnd = ' + window.PortalSDK.onAdEnd);
+  },
+  clearOnAdStart: function() {
+    window.PortalSDK.onAdStart = null;
+    console.log('[PortalSDK] clear onAdStart');
+  },
+  clearOnAdEnd: function() {
+    window.PortalSDK.onAdEnd = null;
+    console.log('[PortalSDK] clear onAdEnd');
   },
  
 }

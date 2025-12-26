@@ -1,7 +1,7 @@
 {
   "name": "com.orbit.portalsdk",
   "displayName": "Portal SDK for Unity",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "unity": "2021.0",
   "description": "Portal SDK for Unity",
   "category": "Unity",
@@ -9,5 +9,12 @@
   "author": {
     "name": "Orbit Software"
   },
+  "samples": [
+    {
+      "displayName": "PortalSDK",
+      "description": "WebGL Template for PortalSDK",
+      "path": "Samples~/PortalSDK"
+    }
+  ],
   "type": "library"
 }

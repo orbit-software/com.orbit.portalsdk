@@ -65,38 +65,38 @@ namespace Orbit
             #endregion
             
             #region API Method: requestAd
-            
+
             private static TaskCompletionSource<bool> requestAdCS;
             [MonoPInvokeCallback(typeof(Action<int>))] private static void requestAdCallback(bool val) => requestAdCS.TrySetResult(val);
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-            [DllImport("__Internal")] public static extern void requestAd(Action<bool> callback);
+            [DllImport("__Internal")] public static extern void requestAd(string placement, Action<bool> callback);
 #else
-            private static void requestAd(Action<bool> cb) => cb(true);
+            private static void requestAd(string placement, Action<bool> cb) => cb(true);
 #endif
-            public static Task<bool> requestAdAsync()
+            public static Task<bool> requestAdAsync(string placement)
             {
                 requestAdCS = new TaskCompletionSource<bool>();
-                requestAd(requestAdCallback);
+                requestAd(placement, requestAdCallback);
                 return requestAdCS.Task;
             }
-            
+
             #endregion
-            
+
             #region API Method: requestRewardAd
-            
+
             private static TaskCompletionSource<bool> requestRewardAdCS;
             [MonoPInvokeCallback(typeof(Action<int>))] private static void requestRewardAdCallback(bool val) => requestRewardAdCS.TrySetResult(val);
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-            [DllImport("__Internal")] public static extern void requestRewardAd(Action<bool> callback);
+            [DllImport("__Internal")] public static extern void requestRewardAd(string placement, Action<bool> callback);
 #else
-            private static void requestRewardAd(Action<bool> cb) => cb(true);
+            private static void requestRewardAd(string placement, Action<bool> cb) => cb(true);
 #endif
-            public static Task<bool> requestRewardAdAsync()
+            public static Task<bool> requestRewardAdAsync(string placement)
             {
                 requestRewardAdCS = new TaskCompletionSource<bool>();
-                requestRewardAd(requestRewardAdCallback);
+                requestRewardAd(placement, requestRewardAdCallback);
                 return requestRewardAdCS.Task;
             }
 

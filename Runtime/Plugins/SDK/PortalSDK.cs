@@ -220,14 +220,16 @@ namespace Orbit
         /// <summary>
         /// Requests an advertisement to be shown.
         /// </summary>
+        /// <param name="placement">Placement identifier</param>
         /// <returns>Success</returns>
-        public static async Task<bool> RequestAd() => await Internal.requestAdAsync();
-        
+        public static async Task<bool> RequestAd(string placement = null) => await Internal.requestAdAsync(placement);
+
         /// <summary>
         /// Requests an reward advertisement to be shown.
         /// </summary>
+        /// <param name="placement">Placement identifier</param>
         /// <returns>Success</returns>
-        public static async Task<bool> RequestRewardAd() => await Internal.requestRewardAdAsync();
+        public static async Task<bool> RequestRewardAd(string placement = null) => await Internal.requestRewardAdAsync(placement);
 
         /// <summary>
         /// [Obsolete] Checks if an advertisement is currently running.

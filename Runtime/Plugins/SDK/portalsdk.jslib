@@ -24,13 +24,15 @@ var LIB = {
   reloadAd: function() {
     console.log('[PortalSDK] reloadAd obsolete');
   },
-  requestAd: function(cb) {
-    window.PortalSDK.requestAd().then(response => {
+  requestAd: function(placement, cb) {
+    var placementId = UTF8ToString(placement);
+    window.PortalSDK.requestAd(placementId ? { placementId: placementId } : {}).then(response => {
         dynCall_vi(cb, response);
     });
   },
-  requestRewardAd: function(cb) {
-    window.PortalSDK.requestRewardAd().then(response => {
+  requestRewardAd: function(placement, cb) {
+    var placementId = UTF8ToString(placement);
+    window.PortalSDK.requestRewardAd(placementId ? { placementId: placementId } : {}).then(response => {
         dynCall_vi(cb, response);
     });
   },

@@ -228,6 +228,32 @@ namespace Orbit
             
             
             #endregion
+
+            #region Promo Codes
+
+            #region API Method: getPromoCode
+
+            private static TaskCompletionSource<string> getPromoCodeCS;
+            [MonoPInvokeCallback(typeof(Action<string>))] private static void getPromoCodeCallback(string val) => getPromoCodeCS.TrySetResult(val);
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+            [DllImport("__Internal")] public static extern void getPromoCode(Action<string> callback);
+#else
+            private static void getPromoCode(Action<string> cb) => cb(null);
+#endif
+
+            public static Task<string> getPromoCodeAsync()
+            {
+                // The promo code does not change during a session, so all callers share one request
+                if (getPromoCodeCS != null) return getPromoCodeCS.Task;
+
+                getPromoCodeCS = new TaskCompletionSource<string>();
+                getPromoCode(getPromoCodeCallback);
+                return getPromoCodeCS.Task;
+            }
+            #endregion
+
+            #endregion
             
             #region IAP
             

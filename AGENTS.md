@@ -1,7 +1,7 @@
 # com.orbit.portalsdk — AGENTS.md
 
 ## Purpose
-Unity UPM package ("Portal SDK for Unity", `package.json` version `1.6.2`, min Unity `2021.0`) wrapping the Orbit
+Unity UPM package ("Portal SDK for Unity", `package.json` version `1.7.0`, min Unity `2021.0`) wrapping the Orbit
 Portal JS SDK for **WebGL builds**. C# lives in `Runtime/Plugins/SDK/` (asmdef `com.orbit.portalsdk`, root
 namespace `Orbit`). Outside `UNITY_WEBGL && !UNITY_EDITOR` every native call is a stub (returns `null`/`true`/no-op),
 so the API compiles and runs in the Editor without the JS SDK.
@@ -27,6 +27,8 @@ property name contains a Cyrillic "с"), `InvoiceResponse{invoice_link}`, `Achie
 - `Task<GameConfig> GetConfig()`; `Task<UserProfile> GetProfile()`.
 - `Task<ulong> GetBalanceGems()` / `Task<ulong> GetBalanceCoins()` (parsed from strings; 0 on failure).
 - `string GetStartParam()` — app start parameter (e.g. multiplayer session id). `ShowSharing(url, text)`.
+- `Task<string> GetPromoCode()` — promo code from the launch link (Telegram `start_param` / web `__portal_promo_code`),
+  `null` if none; callable before `initialize()`; concurrent calls share one request.
 - `Task<ShopItemsResponse> GetShopItems()` / `GetPurchasedShopItems()`.
 - `Task<PurchaseConfirmResponse> OpenPurchaseConfirmModal(int itemId)` and overload `(int itemId, Vector2Int rect)`
   (rect passes x,y with width/height fixed to 1).
@@ -40,7 +42,7 @@ property name contains a Cyrillic "с"), `InvoiceResponse{invoice_link}`, `Achie
   Strings go through `UTF8ToString`/`stringToUTF8` + `_malloc`; callbacks via `dynCall_vi`.
 - It calls the browser global **`window.PortalSDK`** for almost everything (`gameReady`, `isAdEnabled`,
   `requestAd({placementId})`, `getVersion`, `getConfig`, `getProfile`, `getBalance().balance_gems|balance_coins`,
-  `getLocale`, `showSharing`, `getShopItems`, `getPurchasedShopItems`, `openPurchaseConfirmModal(item, rect)`,
+  `getLocale`, `showSharing`, `getPromoCode`, `getShopItems`, `getPurchasedShopItems`, `openPurchaseConfirmModal(item, rect)`,
   `setValue`/`getValue`, `onAdStart`/`onAdEnd` hooks) and **`window.PortalEmuSDK`** for `getStartParam`,
   `setValueSync`, `getValueSync`, `removeValueSync`.
 - The global is provided by the script tag in the WebGL template: `https://sdk.portalapp.games/sdk.umd.js`

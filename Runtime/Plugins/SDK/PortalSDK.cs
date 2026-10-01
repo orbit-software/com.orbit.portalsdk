@@ -326,6 +326,21 @@ namespace Orbit
         public static void ShowSharing(string url, string text) => Internal.showSharing(url, text);
 
         #endregion
+
+        #region Promo Codes
+
+        /// <summary>
+        /// Retrieves the promo code the game was launched with (Telegram and Web).
+        /// Can be called before the SDK is initialized.
+        /// </summary>
+        /// <returns>The promo code, or null if the game was launched without a valid promo code.</returns>
+        public static async Task<string> GetPromoCode()
+        {
+            var promoCode = await Internal.getPromoCodeAsync();
+            return string.IsNullOrEmpty(promoCode) ? null : promoCode;
+        }
+
+        #endregion
         
         #region IAP
 

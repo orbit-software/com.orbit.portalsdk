@@ -147,6 +147,30 @@ var LIB = {
   },
   
   //----------------------------------------
+  //-- Promo Codes
+  //----------------------------------------
+
+  getPromoCode: function(cb) {
+    window.PortalSDK.getPromoCode().then(response => {
+        var str = response || "";
+
+        var bufferSize = lengthBytesUTF8(str) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(str, buffer, bufferSize);
+
+        dynCall_vi(cb, buffer);
+    }).catch(response => {
+        var str = "";
+
+        var bufferSize = lengthBytesUTF8(str) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(str, buffer, bufferSize);
+
+        dynCall_vi(cb, buffer);
+    });
+  },
+
+  //----------------------------------------
   //-- IAP
   //----------------------------------------
   
